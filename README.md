@@ -1,8 +1,16 @@
-# What is this
+# What is this project for
 
 There are just so many technical videos on youtube that it takes too much time to watch them. This is a project to analyse those videos and create a `markdown` extract that I can scan through to figure out if it is worth my time.
 
-# What the repo does
+![screenshot-youtube-ai-notetaker-001](./documentation/screenshot-youtube-ai-notetaker-001.jpg)
+
+## What it does
+
+- Downloads YouTube video
+- Downloads transcript
+- Extracts frames from video
+- Sends transcript + frames to LLM exposed via Ollama
+- generates a `.md` file summarizing the video content
 
 ## Requirements
 
@@ -35,5 +43,3 @@ Run the analysis against a youtube video.
 ```sh
 uv run main.py "https://www.youtube.com/watch?v=lvCZk3k4-34"
 ```
-
-![screenshot-youtube-ai-notetaker-001](./documentation/screenshot-youtube-ai-notetaker-001.jpg)
