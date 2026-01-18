@@ -1,0 +1,13 @@
+[project]
+name = "youtube-ai-notetaker"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "ollama>=0.6.1",
+    "opencv-python>=4.12.0.88",
+    "rich>=14.2.0",
+    "youtube-transcript-api>=1.2.3",
+    "yt-dlp>=2025.12.8",
+]
