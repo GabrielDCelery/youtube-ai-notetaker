@@ -36,4 +36,4 @@ Run the analysis against a youtube video.
 uv run main.py "https://www.youtube.com/watch?v=lvCZk3k4-34"
 ```
 
-![screenshot-youtube-ai-notetaker-001]("./documentation/screenshot-youtube-ai-notetaker-001.jpg")
+![screenshot-youtube-ai-notetaker-001](./documentation/screenshot-youtube-ai-notetaker-001.jpg)
