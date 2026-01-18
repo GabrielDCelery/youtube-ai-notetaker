@@ -4,6 +4,8 @@ There are just so many technical videos on youtube that it takes too much time t
 
 ![screenshot-youtube-ai-notetaker-001](./documentation/screenshot-youtube-ai-notetaker-001.jpg)
 
+![screenshot-youtube-ai-notetaker-002](./documentation/screenshot-youtube-ai-notetaker-002.jpg)
+
 ## What it does
 
 - Downloads YouTube video
