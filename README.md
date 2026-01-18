@@ -43,5 +43,5 @@ nc -zv localhost 11434
 Run the analysis against a youtube video.
 
 ```sh
-uv run main.py "https://www.youtube.com/watch?v=lvCZk3k4-34"
+ uv run main.py "https://www.youtube.com/watch?v=lsMQRaeKNDk"
 ```
