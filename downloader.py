@@ -8,7 +8,7 @@ import ollama
 import yt_dlp
 from youtube_transcript_api import YouTubeTranscriptApi
 
-ollama_host = os.getenv("OLLAMA_HOST")
+ollama_host = os.getenv("OLLAMA_HOST", "localhost")
 
 # Configure Ollama client to use remote host
 ollama_client = ollama.Client(host=f"{ollama_host}:11434")
