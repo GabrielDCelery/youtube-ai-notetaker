@@ -1,7 +1,11 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
 [project]
 name = "youtube-ai-notetaker"
 version = "0.1.0"
-description = "Add your description here"
+description = "AI powered note taker from YouTube videos"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
@@ -11,3 +15,9 @@ dependencies = [
     "youtube-transcript-api>=1.2.3",
     "yt-dlp>=2025.12.8",
 ]
+
+[project.scripts]
+ytainotetaker = "youtube_ai_notetaker.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/youtube_ai_notetaker"]

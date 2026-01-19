@@ -1,26 +1,40 @@
-import sys
+import argparse
 from pathlib import Path
 
 from rich import markdown, print
 
-from downloader import (
+from youtube_ai_notetaker.analysis import (
     analyze_video_content,
-    download_video,
     generate_summary_with_diagrams,
-    get_transcript,
-    get_video_id,
 )
+from youtube_ai_notetaker.transcript import get_transcript
+from youtube_ai_notetaker.video import download_video, get_video_id
 
 
-def main(youtube_url):
-    video_id = get_video_id(youtube_url)
+def main():
+    parser = argparse.ArgumentParser(
+        description="Generate AI-powered notes from YouTube videos"
+    )
+    parser.add_argument("url", help="YouTube video URL")
+    # parser.add_argument(
+    #     "--frames", type=int, default=3, help="Number of frames to analyze (default: 3)"
+    # )
+    # parser.add_argument(
+    #     "--output", help="Output file path (default: <video_id>_analysis.md)"
+    # )
+
+    args = parser.parse_args()
+
+    # Now use args.url, args.frames, args.output
+
+    video_id = get_video_id(args.url)
     if not video_id:
         print("[red] Invalid YouTube URL[/red]")
         return
     print("get transcript")
     transcript_text, transcript_snippets = get_transcript(video_id)
     print("download video")
-    video_path = download_video(youtube_url, video_id)
+    video_path = download_video(args.url, video_id)
     print("analyze video content")
     visual_context = analyze_video_content(video_path, transcript_snippets)
     print("generate summary with diagrams")
@@ -39,7 +53,4 @@ def main(youtube_url):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print("Usage: pyton main.py <youtube_url>")
-        sys.exit(1)
-    main(sys.argv[1])
+    main()
