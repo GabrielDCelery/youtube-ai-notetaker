@@ -22,8 +22,27 @@ There are just so many technical videos on youtube that it takes too much time t
 
 The project uses [mise](https://mise.jdx.dev/) to make installing dependencies and running tasks easier. Check the `mise.toml` file to see what dependencies are installed and what scripts are being used. The steps to follow:
 
+1. Install dependencies
+
 ```sh
 mise install
+```
+
+2. Get ollama server running
+
+```sh
+ollama serve
+ollama pull llava # to analyse the video content
+ollama pull llama3.2 # to generate summary with diagrams
+
+# Does not hurt checking if the server is reachable
+nc -zv localhost 11434
+# Connection to localhost (127.0.0.1) 11434 port [tcp/*] succeeded!
+```
+
+3. Package the project and create a CLI command
+
+```sh
 uv venv
 uv sync
 uv pip install .
@@ -33,19 +52,7 @@ source .venv/bin/activate
 which ytainotetaker
 ```
 
-Then have a server running ollama and pull the models that the code uses.
-
-```sh
-ollama serve
-ollama pull llava # to analyse the video content
-ollama pull llama3.2 # to generate summary with diagrams
-
-# Does not hurt checking if the connection is up
-nc -zv localhost 11434
-# Connection to localhost (127.0.0.1) 11434 port [tcp/*] succeeded!
-```
-
-Run the analysis against a youtube video.
+4. Run it
 
 ```sh
 ytainotetaker "https://www.youtube.com/watch?v=lsMQRaeKNDk"
