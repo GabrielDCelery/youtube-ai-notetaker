@@ -1,6 +1,8 @@
 [tools]
 deno = "2.6.5"
 ollama = "0.13.5"
+python = "3.14"
+uv = "0.9.22"
 
 [env]
 _.file = { path = ".env", redact = true }
