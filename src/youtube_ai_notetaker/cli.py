@@ -25,8 +25,6 @@ def main():
 
     args = parser.parse_args()
 
-    # Now use args.url, args.frames, args.output
-
     video_id = get_video_id(args.url)
     if not video_id:
         print("[red] Invalid YouTube URL[/red]")
