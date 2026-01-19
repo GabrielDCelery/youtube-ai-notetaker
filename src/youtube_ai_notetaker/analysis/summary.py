@@ -4,7 +4,7 @@ from .ollama import ollama_client
 
 # Load prompts from instruction files
 # Navigate up to project root: analysis -> youtube_ai_notetaker -> src -> project_root
-INSTRUCTIONS_DIR = Path(__file__).parent.parent.parent.parent / "instructions"
+INSTRUCTIONS_DIR = Path(__file__).parent.parent / "instructions"
 ANALYSIS_PROMPT_TEMPLATE = (INSTRUCTIONS_DIR / "analysis_prompt.md").read_text()
 SYSTEM_PROMPT = (INSTRUCTIONS_DIR / "system_prompt.md").read_text()
 
