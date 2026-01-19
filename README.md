@@ -26,6 +26,11 @@ The project uses [mise](https://mise.jdx.dev/) to make installing dependencies a
 mise install
 uv venv
 uv sync
+uv pip install .
+source .venv/bin/activate
+
+# check if the package was installed and is accessible via your $PATH
+which ytainotetaker
 ```
 
 Then have a server running ollama and pull the models that the code uses.
@@ -43,5 +48,5 @@ nc -zv localhost 11434
 Run the analysis against a youtube video.
 
 ```sh
- uv run main.py "https://www.youtube.com/watch?v=lsMQRaeKNDk"
+ytainotetaker "https://www.youtube.com/watch?v=lsMQRaeKNDk"
 ```
