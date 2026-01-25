@@ -1,3 +1,3 @@
-from .fetcher import get_transcript
+from .fetcher import get_transcript, get_transcript_snipttets
 
-__all__ = ["get_transcript"]
+__all__ = ["get_transcript", "get_transcript_snipttets"]
