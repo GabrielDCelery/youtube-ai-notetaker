@@ -78,3 +78,51 @@ ytainotetaker "https://www.youtube.com/watch?v=VIDEO_ID"
 - Frames are base64-encoded for Ollama multimodal API
 - Timestamps formatted as `[MM:SS]` or `[HH:MM:SS]`
 - Visual context includes ±30 seconds of surrounding transcript
+- Use `pathlib.Path` for file path construction
+- Typed argument parsing via custom `Args(argparse.Namespace)` class
+
+## Future Direction
+
+### Problem with Current Approach
+
+The current pipeline extracts a fixed number of frames (3) at even intervals. This works poorly for:
+- **Long videos** (1-2 hours) - 3 frames can't capture enough content
+- **Uneven content distribution** - A 2-hour talk might have diagrams clustered in one section
+- **Wasted processing** - Intro/outro segments get frames but have no useful visuals
+
+### Planned Architecture: Segment-Aware Analysis
+
+Instead of blind frame sampling, use a two-phase approach:
+
+1. **Topic Segmentation** - Analyze transcript with LLM to identify distinct sections with timestamps
+   ```json
+   [
+     {"topic": "Introduction", "start": 0, "end": 45},
+     {"topic": "Setting up the project", "start": 45, "end": 312},
+     {"topic": "Authentication deep-dive", "start": 312, "end": 1100}
+   ]
+   ```
+
+2. **Dynamic Frame Allocation** - Extract frames proportional to section length/importance
+   - Long technical sections get more frames
+   - Short intros/outros get fewer or none
+
+3. **Section-Aware Visual Analysis** - Send llava frames grouped by section with relevant transcript context
+
+### Analysis Modes
+
+Add CLI flags to support different use cases:
+
+| Mode | Description | Use Case |
+|------|-------------|----------|
+| `--quick` | Transcript + segmentation only, no visuals | Fast overview, talking-head videos |
+| `--full` | Transcript + segment-aware visual analysis | Tutorials with diagrams/code |
+
+The segmentation step becomes the foundation for both modes - it improves summary structure even without visual analysis.
+
+### Why This Matters
+
+- **Efficiency** - Don't waste llava calls on segments without meaningful visuals
+- **Quality** - llava gets better context when frames are grouped by topic
+- **Scalability** - Handles 10-minute and 2-hour videos appropriately
+- **Flexibility** - Quick mode for fast passes, full mode for comprehensive analysis
