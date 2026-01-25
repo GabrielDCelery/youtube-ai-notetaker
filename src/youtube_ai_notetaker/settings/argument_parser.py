@@ -1,4 +1,5 @@
 import argparse
+from typing import Literal
 
 
 class Args(argparse.Namespace):
@@ -6,6 +7,7 @@ class Args(argparse.Namespace):
     download_dir: str
     output_dir: str
     ollama_host: str
+    mode: Literal["quick", "full"]
 
 
 def parse_arguments() -> Args:
@@ -27,12 +29,13 @@ def parse_arguments() -> Args:
         default="http://localhost:11434",
     )
 
-    # parser.add_argument(
-    #     "--frames", type=int, default=3, help="Number of frames to analyze (default: 3)"
-    # )
-    # parser.add_argument(
-    #     "--output", help="Output file path (default: <video_id>_analysis.md)"
-    # )
+    parser.add_argument(
+        "-m",
+        "--mode",
+        choices=["quick", "full"],
+        default="quick",
+        help="Analysis mode: 'quick' for transcript + segmentation only, 'full' for visual analysis (default: quick)",
+    )
 
     ns = parser.parse_args()
 
@@ -41,4 +44,5 @@ def parse_arguments() -> Args:
         download_dir=ns.download_dir,
         output_dir=ns.output_dir,
         ollama_host=ns.ollama_host,
+        mode=ns.mode,
     )

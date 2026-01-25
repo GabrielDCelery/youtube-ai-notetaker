@@ -33,8 +33,8 @@ def detect_segments(
         transcript=transcript_txt, duration_formatted=duration_formatted
     )
     response = ollama_client.chat(
-        # model="llama3.2",
-        model="llama3.1:8b",
+        model="llama3.2",
+        # model="llama3.1:8b",
         messages=[
             {
                 "role": "system",

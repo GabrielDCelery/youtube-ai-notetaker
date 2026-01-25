@@ -12,6 +12,7 @@ from youtube_ai_notetaker import (
     get_video_id,
     parse_arguments,
 )
+from youtube_ai_notetaker.analysis.summary import generate_quick_summary
 from youtube_ai_notetaker.segmentation.detector import detect_segments
 
 
@@ -32,8 +33,18 @@ def main():
     print(f"detect segments from transcript")
     segments = detect_segments(ollama_client, transcript_snippets)
 
-    print(segments)
+    if args.mode == "quick":
+        print(f"generating quick summary")
+        quick_summary = generate_quick_summary(
+            ollama_client, transcript_snippets, segments
+        )
+        output_file = Path(args.output_dir or ".", f"{video_id}_quick_summary.md")
+        output_file.write_text(quick_summary)
+        print(f"[green]Analysis saved to {output_file}[/green]\n")
+        print(markdown.Markdown(markup=quick_summary))
 
+    if args.mode == "full":
+        print(f"TODO")
     # print(f"download video {video_id}")
     # video_path = download_video(args.download_dir, args.video_url, video_id)
     #

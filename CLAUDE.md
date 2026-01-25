@@ -17,6 +17,8 @@ src/youtube_ai_notetaker/
 │   └── frames.py            # Frame extraction via OpenCV
 ├── transcript/
 │   └── fetcher.py           # YouTube transcript API
+├── segmentation/
+│   └── detector.py          # Topic segmentation via LLM (llama3.1:8b)
 ├── analysis/
 │   ├── ollama.py            # Ollama client configuration
 │   ├── visual.py            # Frame analysis with llava model
@@ -25,18 +27,20 @@ src/youtube_ai_notetaker/
 │   └── formatter.py         # Timestamp formatting
 └── instructions/
     ├── system_prompt.md     # LLM system prompt
-    └── analysis_prompt.md   # Analysis prompt template
+    ├── analysis_prompt.md   # Analysis prompt template
+    └── segmentation_prompt.md # Segmentation prompt template
 ```
 
 ## Pipeline Flow
 
 1. **URL Parsing** - Extract video ID from YouTube URL
 2. **Transcript Fetch** - Get timestamped transcript via YouTube Transcript API
-3. **Video Download** - Download MP4 to `downloads/` via yt-dlp
-4. **Frame Extraction** - Extract 3 frames at even intervals using OpenCV
-5. **Visual Analysis** - Analyze each frame with `llava` model (multimodal)
-6. **Summary Generation** - Combine transcript + visual context, send to `llama3.2`
-7. **Output** - Save markdown file and display in terminal
+3. **Topic Segmentation** - Analyze transcript with `llama3.1:8b` to identify distinct sections with timestamps
+4. **Video Download** - Download MP4 to `downloads/` via yt-dlp
+5. **Frame Extraction** - Extract frames (currently 3 at even intervals, planned: segment-aware)
+6. **Visual Analysis** - Analyze each frame with `llava` model (multimodal)
+7. **Summary Generation** - Combine transcript + visual context, send to `llama3.2`
+8. **Output** - Save markdown file and display in terminal
 
 ## Commands
 
@@ -63,7 +67,7 @@ ytainotetaker "https://www.youtube.com/watch?v=VIDEO_ID"
 ## Runtime Requirements
 
 - Ollama server running (`ollama serve`)
-- Models pulled: `ollama pull llava` and `ollama pull llama3.2`
+- Models pulled: `ollama pull llava`, `ollama pull llama3.2`, and `ollama pull llama3.1:8b`
 - `OLLAMA_HOST` env var (optional, defaults to localhost)
 
 ## Key Files
@@ -83,33 +87,27 @@ ytainotetaker "https://www.youtube.com/watch?v=VIDEO_ID"
 
 ## Future Direction
 
-### Problem with Current Approach
+### Completed: Topic Segmentation
 
-The current pipeline extracts a fixed number of frames (3) at even intervals. This works poorly for:
-- **Long videos** (1-2 hours) - 3 frames can't capture enough content
-- **Uneven content distribution** - A 2-hour talk might have diagrams clustered in one section
-- **Wasted processing** - Intro/outro segments get frames but have no useful visuals
+The segmentation module (`segmentation/detector.py`) is now implemented:
+- `detect_segments()` analyzes transcript with `llama3.1:8b`
+- Returns list of segments: `[{"topic": str, "start": float, "end": float}, ...]`
+- Uses `segmentation_prompt.md` template with `[HH:MM:SS - HH:MM:SS] Topic name` format
 
-### Planned Architecture: Segment-Aware Analysis
+### Next Steps
 
-Instead of blind frame sampling, use a two-phase approach:
+#### 1. Dynamic Frame Allocation (Not Yet Implemented)
 
-1. **Topic Segmentation** - Analyze transcript with LLM to identify distinct sections with timestamps
-   ```json
-   [
-     {"topic": "Introduction", "start": 0, "end": 45},
-     {"topic": "Setting up the project", "start": 45, "end": 312},
-     {"topic": "Authentication deep-dive", "start": 312, "end": 1100}
-   ]
-   ```
+Frame extraction still uses fixed 3-frame sampling. Needs update to:
+- Extract frames proportional to segment length/importance
+- Long technical sections get more frames
+- Short intros/outros get fewer or none
 
-2. **Dynamic Frame Allocation** - Extract frames proportional to section length/importance
-   - Long technical sections get more frames
-   - Short intros/outros get fewer or none
+#### 2. Section-Aware Visual Analysis (Not Yet Implemented)
 
-3. **Section-Aware Visual Analysis** - Send llava frames grouped by section with relevant transcript context
+Send llava frames grouped by segment with relevant transcript context instead of individual frame analysis.
 
-### Analysis Modes
+#### 3. Analysis Modes (Not Yet Implemented)
 
 Add CLI flags to support different use cases:
 
@@ -118,9 +116,7 @@ Add CLI flags to support different use cases:
 | `--quick` | Transcript + segmentation only, no visuals | Fast overview, talking-head videos |
 | `--full` | Transcript + segment-aware visual analysis | Tutorials with diagrams/code |
 
-The segmentation step becomes the foundation for both modes - it improves summary structure even without visual analysis.
-
-### Why This Matters
+### Why This Architecture Matters
 
 - **Efficiency** - Don't waste llava calls on segments without meaningful visuals
 - **Quality** - llava gets better context when frames are grouped by topic

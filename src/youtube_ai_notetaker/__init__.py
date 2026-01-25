@@ -4,6 +4,7 @@ __version__ = "0.1.0"
 
 from youtube_ai_notetaker.analysis import (
     analyze_video_content,
+    generate_quick_summary,
     generate_summary_with_diagrams,
 )
 from youtube_ai_notetaker.segmentation import detect_segments
@@ -21,4 +22,5 @@ __all__ = [
     "generate_summary_with_diagrams",
     "parse_arguments",
     "get_transcript_snipttets",
+    "generate_quick_summary",
 ]
