@@ -58,8 +58,8 @@ def generate_full_summary(
 **Transcript:**
 {seg["transcript"]}
 
-**Visual observations:**
-{seg["visual"] or "No visual analysis available."}
+**Visual content:**
+{seg["visual"] or "No visual content."}
 
 ---
 """
@@ -73,11 +73,12 @@ Below are segments from the video, each with transcript text and visual content 
 Create a well-structured markdown document that:
 1. Has a clear title and overview
 2. Organizes information by topic/segment
-3. Integrates transcript content with the visual content
-4. Highlights key takeaways and important details
-5. Uses proper markdown formatting (headers, lists, code blocks if relevant)
+3. Summarizes the key discussion points from the transcript - DO NOT include the transcript verbatim
+4. Preserves all mermaid diagrams, code blocks, ASCII art, and markdown tables from the visual content EXACTLY as they appear
+5. Integrates the summarized discussion points with the visual content
+6. Highlights key takeaways
 
-IMPORTANT: Preserve all mermaid diagrams, code blocks, ASCII art, and markdown tables from the visual content EXACTLY as they appear. Do not summarize or describe them - include them directly in your output.
+Output concise, useful notes - not a transcript dump.
 
 Write the complete markdown document:"""
 
