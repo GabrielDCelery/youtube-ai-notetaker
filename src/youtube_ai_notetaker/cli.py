@@ -14,6 +14,7 @@ from youtube_ai_notetaker import (
 )
 from youtube_ai_notetaker.analysis.summary import generate_quick_summary
 from youtube_ai_notetaker.segmentation.detector import detect_segments
+from youtube_ai_notetaker.video.frames import extract_frames_from_segments
 
 
 def main():
@@ -44,9 +45,12 @@ def main():
         print(markdown.Markdown(markup=quick_summary))
 
     if args.mode == "full":
-        print(f"TODO")
-    # print(f"download video {video_id}")
-    # video_path = download_video(args.download_dir, args.video_url, video_id)
+        print(f"download video {video_id}")
+        video_path = download_video(args.download_dir, args.video_url, video_id)
+
+        print(f"extract frames from video {video_path}")
+        frames = extract_frames_from_segments(video_path, segments, 10)
+
     #
     # print("analyze video content")
     # visual_context = analyze_video_content(video_path, transcript_snippets)

@@ -10,13 +10,19 @@ from youtube_ai_notetaker.analysis import (
 from youtube_ai_notetaker.segmentation import detect_segments
 from youtube_ai_notetaker.settings import parse_arguments
 from youtube_ai_notetaker.transcript import get_transcript, get_transcript_snipttets
-from youtube_ai_notetaker.video import download_video, extract_frames, get_video_id
+from youtube_ai_notetaker.video import (
+    download_video,
+    extract_frames,
+    extract_frames_from_segments,
+    get_video_id,
+)
 
 __all__ = [
     "get_video_id",
     "detect_segments",
     "download_video",
     "extract_frames",
+    "extract_frames_from_segments",
     "get_transcript",
     "analyze_video_content",
     "generate_summary_with_diagrams",
