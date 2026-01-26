@@ -55,5 +55,5 @@ which ytainotetaker
 4. Run it
 
 ```sh
-ytainotetaker "https://www.youtube.com/watch?v=lsMQRaeKNDk"
+ytainotetaker -d downloads -o downloads -H http://10.83.16.99:11434 "https://www.youtube.com/watch?v=pnj3Jbho5Ck" -m full
 ```
