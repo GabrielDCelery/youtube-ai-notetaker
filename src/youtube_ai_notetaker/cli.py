@@ -13,6 +13,7 @@ from youtube_ai_notetaker import (
     parse_arguments,
 )
 from youtube_ai_notetaker.analysis.summary import generate_quick_summary
+from youtube_ai_notetaker.analysis.visual import analyze_segments_visual
 from youtube_ai_notetaker.segmentation.detector import detect_segments
 from youtube_ai_notetaker.video.frames import extract_frames_from_segments
 
@@ -49,7 +50,12 @@ def main():
         video_path = download_video(args.download_dir, args.video_url, video_id)
 
         print(f"extract frames from video {video_path}")
-        frames = extract_frames_from_segments(video_path, segments, 10)
+        segments_with_frames = extract_frames_from_segments(video_path, segments, 10)
+
+        visual_analysis = analyze_segments_visual(
+            ollama_client, segments_with_frames, transcript_snippets
+        )
+        print(visual_analysis)
 
     #
     # print("analyze video content")

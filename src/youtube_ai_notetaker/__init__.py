@@ -3,6 +3,7 @@
 __version__ = "0.1.0"
 
 from youtube_ai_notetaker.analysis import (
+    analyze_segments_visual,
     analyze_video_content,
     generate_quick_summary,
     generate_summary_with_diagrams,
@@ -18,6 +19,7 @@ from youtube_ai_notetaker.video import (
 )
 
 __all__ = [
+    "analyze_segments_visual",
     "get_video_id",
     "detect_segments",
     "download_video",
