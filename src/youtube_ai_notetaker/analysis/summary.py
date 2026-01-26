@@ -2,6 +2,7 @@ from pathlib import Path
 
 from ollama import Client
 
+from youtube_ai_notetaker.analysis.visual import SegmentVisualAnalysis
 from youtube_ai_notetaker.segmentation.detector import Segment
 from youtube_ai_notetaker.transcript.fetcher import TranscriptSnippet
 from youtube_ai_notetaker.utils.formatter import format_timestamp
@@ -35,6 +36,54 @@ def generate_quick_summary(
                 "content": prompt,
             },
         ],
+    )
+
+    return response["message"]["content"] or ""
+
+
+def generate_full_summary(
+    ollama_client: Client, analyzed_segments: list[SegmentVisualAnalysis]
+) -> str:
+    """
+    Generate a cohesive markdown summary from analyzed segments.
+    """
+    segments_context = ""
+    for seg in analyzed_segments:
+        segment = seg["segment"]
+        start = format_timestamp(segment["start"])
+        end = format_timestamp(segment["end"])
+        segments_context += f"""
+## [{start} - {end}] {segment["topic"]}
+
+**Transcript:**
+{seg["transcript"]}
+
+**Visual observations:**
+{seg["visual"] or "No visual analysis available."}
+
+---
+"""
+
+    prompt = f"""You are creating comprehensive markdown notes from a video analysis.
+
+Below are segments from the video, each with transcript text and visual content (diagrams, code, etc.) extracted from key frames.
+
+{segments_context}
+
+Create a well-structured markdown document that:
+1. Has a clear title and overview
+2. Organizes information by topic/segment
+3. Integrates transcript content with the visual content
+4. Highlights key takeaways and important details
+5. Uses proper markdown formatting (headers, lists, code blocks if relevant)
+
+IMPORTANT: Preserve all mermaid diagrams, code blocks, ASCII art, and markdown tables from the visual content EXACTLY as they appear. Do not summarize or describe them - include them directly in your output.
+
+Write the complete markdown document:"""
+
+    response = ollama_client.chat(
+        model="llama3.1:8b",
+        messages=[{"role": "user", "content": prompt}],
     )
 
     return response["message"]["content"] or ""
