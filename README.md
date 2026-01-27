@@ -46,6 +46,7 @@ nc -zv localhost 11434
 uv venv
 uv sync
 uv pip install .
+# or uv pip install -e . when you are developing
 source .venv/bin/activate
 
 # check if the package was installed and is accessible via your $PATH
