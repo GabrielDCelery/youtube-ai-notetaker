@@ -8,11 +8,14 @@ There are just so many technical videos on youtube that it takes too much time t
 
 ## What it does
 
-- Downloads YouTube video
-- Downloads transcript
-- Extracts frames from video
-- Sends transcript + frames to LLM exposed via Ollama
-- Generates a `.md` file summarizing the video content
+- Fetches YouTube transcript
+- Uses LLM to segment video into topics
+- Generates a markdown summary
+
+**Full mode** additionally:
+- Downloads the video
+- Extracts frames from each segment
+- Uses visual analysis (llava) to capture diagrams and code
 
 ## Getting Started
 
