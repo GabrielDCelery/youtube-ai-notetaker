@@ -4,7 +4,7 @@
 
 CLI tool that generates markdown notes from YouTube videos using local LLMs via Ollama.
 
-See `docs/setup.md` for installation and runtime requirements.
+See `README.md` for installation and usage.
 See `pyproject.toml` for dependencies.
 See `mise.toml` for tool versions.
 
