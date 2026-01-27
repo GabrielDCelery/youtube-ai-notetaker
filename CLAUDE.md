@@ -4,11 +4,16 @@
 
 CLI tool that generates markdown notes from YouTube videos using local LLMs via Ollama.
 
+See `docs/setup.md` for installation and runtime requirements.
+See `pyproject.toml` for dependencies.
+See `mise.toml` for tool versions.
+
 ## Architecture
 
 ```
 src/youtube_ai_notetaker/
 ├── cli.py                    # Entry point - ytainotetaker command
+├── settings/argument_parser.py  # CLI argument parsing
 ├── video/                    # URL parsing, download (yt-dlp), frame extraction (OpenCV)
 ├── transcript/fetcher.py     # YouTube transcript API
 ├── segmentation/detector.py  # Topic segmentation via llama3.1:8b
