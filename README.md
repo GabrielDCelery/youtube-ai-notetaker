@@ -17,22 +17,41 @@ There are just so many technical videos on youtube that it takes too much time t
 - Extracts frames from each segment
 - Uses visual analysis (llava) to capture diagrams and code
 
-## Requirements
+## How to run it
 
-- Ollama server running (`ollama serve`)
-- Required models:
-  - `ollama pull llama3.1:8b` - Topic segmentation and summaries
-  - `ollama pull llava` - Visual/frame analysis (full mode only)
+The project uses [mise](https://mise.jdx.dev/) to make installing dependencies and running tasks easier. Check the `mise.toml` file to see what dependencies are installed.
 
-## Installation
+### 1. Install dependencies
 
 ```bash
-mise install                 # Install Python, Ollama, uv
-uv venv && uv sync           # Create venv and install deps
-uv pip install .             # Install CLI entry point
+mise install
 ```
 
-## Usage
+### 2. Get Ollama server running
+
+```bash
+ollama serve
+ollama pull llama3.1:8b  # for topic segmentation and summaries
+ollama pull llava        # for visual analysis (full mode only)
+
+# Check if the server is reachable
+nc -zv localhost 11434
+```
+
+### 3. Package the project
+
+```bash
+uv venv
+uv sync
+uv pip install .
+# or uv pip install -e . for development
+source .venv/bin/activate
+
+# Verify installation
+which ytainotetaker
+```
+
+### 4. Run it
 
 ```bash
 # Quick mode (default) - transcript only
